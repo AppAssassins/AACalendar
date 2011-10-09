@@ -26,21 +26,21 @@ public class MainActivity extends Activity {
 		LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		TableLayout calendarView = new TableLayout(this);
+		calendarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT));
 		calendarView.setStretchAllColumns(true);
 		calendarView.setShrinkAllColumns(true);
 		
-		TableRow row;
-		TextView tv;
-		//named toast allows the ability to cancel currently displayed toasts
-		final Toast myToast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
-		
-		//get calendar instance and calendar related strings
+		//declarations
 		final Calendar calendar = Calendar.getInstance();
-		String[] daysOfWeek = new String[calendar.getActualMaximum(Calendar.DAY_OF_WEEK)];
+		final int curDay = calendar.get(Calendar.DAY_OF_MONTH), curMonth = calendar.get(Calendar.MONTH), curYear = calendar.get(Calendar.YEAR);
+		TextView tv;
+
+		//get calendar related strings
+		final String[] daysOfWeek = new String[calendar.getActualMaximum(Calendar.DAY_OF_WEEK)];
 		for (int i = 0; i < daysOfWeek.length; i++) {
 			daysOfWeek[i] = DateUtils.getDayOfWeekString(i + 1, DateUtils.LENGTH_MEDIUM);
 		}
-		String[] monthNames = new String[calendar.getActualMaximum(Calendar.MONTH) + 1];
+		final String[] monthNames = new String[calendar.getActualMaximum(Calendar.MONTH) + 1];
 		for (int i = 0; i < monthNames.length; i++) {
 			monthNames[i] = DateUtils.getMonthString(i, DateUtils.LENGTH_LONG);
 		}
@@ -50,18 +50,30 @@ public class MainActivity extends Activity {
 		tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		String dateString = daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK)-1] + " " +
 							monthNames[calendar.get(Calendar.MONTH)] + " " +
-							Integer.toString(calendar.get(Calendar.DAY_OF_MONTH)) + ", " +
+							Integer.toString(calendar.get(Calendar.DAY_OF_WEEK)) + ", " +
 							Integer.toString(calendar.get(Calendar.YEAR));
 		tv.setText(dateString);
 		tv.setGravity(Gravity.CENTER);
 		
 		//add child views
 		layout.addView(tv);
+		createCalendarView(calendarView, daysOfWeek, monthNames, curMonth, curDay);
 		layout.addView(calendarView);
+		this.setContentView(layout);
+	}
+
+	private void createCalendarView(final TableLayout calendarView, final String[] daysOfWeek, final String[] monthNames, final int month, final int day) {
+		calendarView.removeAllViews();
+		int startOfWeek, daysInWeek, numRows, daysInMonth, firstWeekdayInMonth, daysInPrevMonth, cellIndex;
+		TableRow row;
+		TextView tv;
+		//named toast allows the ability to cancel currently displayed toasts
+		final Toast myToast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
+		final Calendar calendar = Calendar.getInstance();
 		
 		//Add column labels
-		int startOfWeek = 0; //0 = Sunday
-		int daysInWeek = 7;
+		startOfWeek = 0; //0 = Sunday
+		daysInWeek = 7;
 		row = new TableRow(this);
 		row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT));
 		for(int i=0; i<daysInWeek; i++) {
@@ -72,21 +84,17 @@ public class MainActivity extends Activity {
 			row.addView(tv);
 		}
 		calendarView.addView(row);
-		
+
 		//determine number of rows
-		//probably not the best method. currently instantiating new calendar,
-		//setting date to previous month, and getting max days
-		int numRows = 4;
-		int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-		Calendar infoCal = calendar;
-		infoCal.set(Calendar.DAY_OF_MONTH, 1);
-		int firstWeekdayInMonth = infoCal.get(Calendar.DAY_OF_WEEK); //Sun = 1
-		infoCal.set(Calendar.MONTH, infoCal.get(Calendar.MONTH)-1);
-		int daysInPrevMonth = infoCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		numRows = 4;
+		daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		firstWeekdayInMonth = calendar.get(Calendar.DAY_OF_WEEK); //Sun = 1
+		calendar.set(Calendar.MONTH, month-1);
+		daysInPrevMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 		numRows = (daysInMonth + firstWeekdayInMonth) % 7 == 0 ? (daysInMonth + firstWeekdayInMonth) / 7 : (daysInMonth + firstWeekdayInMonth) / 7 + 1;
 		
 		//Drawable mySelector = getResources().getDrawable(R.drawable.selector);
-		int cellIndex;
 		for(int j=1; j<=numRows; j++) {
 			row = new TableRow(this);
 			row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.FILL_PARENT, 1));
@@ -101,30 +109,49 @@ public class MainActivity extends Activity {
 					//trailing previous month
 					tv.setText(Integer.toString(daysInPrevMonth - firstWeekdayInMonth + cellIndex + 1));
 					tv.setTextColor(Color.DKGRAY);
+					tv.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							int dayClicked = Integer.parseInt(((TextView) v).getText().toString());
+							String dateString = monthNames[month-1] + " " + ((TextView) v).getText().toString();
+							myToast.cancel();
+							myToast.setText(dateString);
+							myToast.show();
+							
+							createCalendarView(calendarView, daysOfWeek, monthNames, month-1, dayClicked);
+						}
+					});
 				}
 				else if(cellIndex < daysInMonth + firstWeekdayInMonth) {
 					//current month
 					tv.setText(Integer.toString(cellIndex-firstWeekdayInMonth+1));
+					tv.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							String dateString = monthNames[month] + " " + ((TextView) v).getText().toString();
+							myToast.cancel();
+							myToast.setText(dateString);
+							myToast.show();
+						}
+					});
 				}
 				else {
 					//beginning of next month
 					tv.setText(Integer.toString(cellIndex - daysInMonth - firstWeekdayInMonth + 1));
 					tv.setTextColor(Color.DKGRAY);
+					tv.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							String dateString = monthNames[month+1] + " " + ((TextView) v).getText().toString();
+							myToast.cancel();
+							myToast.setText(dateString);
+							myToast.show();
+						}
+					});
 				}
-				tv.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						String dayClicked = ((TextView) v).getText().toString();
-						myToast.cancel();
-						myToast.setText(dayClicked);
-						myToast.show();
-					}
-				});
 				row.addView(tv);
 			}
 			calendarView.addView(row);
 		}
-		calendarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.FILL_PARENT));
-		this.setContentView(layout);
 	}
 }
