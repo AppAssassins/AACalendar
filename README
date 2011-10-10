@@ -1,3 +1,5 @@
+push 6 - cleaned up layout code (using xml as layout shell)
+push 5 - added sloppy onClickListeners
 push 4 - wrote basic layout
 push 3 - testing EGit in Eclipse
 push 2 - testing push

@@ -2,4 +2,45 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" />
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/navigation"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<Button
+			android:id="@+id/prevBtn"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:gravity="center"
+			android:text="&lt;" />
+		<TextView
+			android:id="@+id/monthLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:text="blah" />
+		<Button
+			android:id="@+id/nextBtn"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:gravity="center"
+			android:text="&gt;"
+			android:layout_alignParentRight="true" />
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/dayLabels"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+	</LinearLayout>
+	<TableLayout
+		android:id="@+id/calendarView"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:stretchColumns="*"
+		android:shrinkColumns="*">
+	</TableLayout>
+</LinearLayout>
