@@ -5,3 +5,20 @@ push 3 - testing EGit in Eclipse
 push 2 - testing push
 push 1 - uploaded project
 Not yet implemented
+
+
+
+NOTES:
+
+All counters are 1 based
+
+TO DO:
+
+Highlight 'today'
+Set focus left/right to move between rows
+Find way to hide/show rows without causing delay
+Documentation/comments once things are semi stable
+Redo onClickListener for cells
+BUGFIX: crash on year change / keep date to be shown in a calendar. change calendar->updateView()
+Decide what exactly should be part of the CalendarLayout (incl. buttons and labels or just grid?)
+Save layout on destroy, restore (rather than calculate) on resume
