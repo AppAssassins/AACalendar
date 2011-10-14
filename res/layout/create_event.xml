@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:fillViewport="true"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:paddingTop="4dip"
+		android:paddingLeft="8dip"
+		android:paddingRight="8dip">
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dip"
+			android:layout_marginBottom="4dip"
+			android:text="Event" />
+		<EditText
+			android:id="@+id/eventTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="3dip"
+			android:singleLine="true" />
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1px"
+			android:layout_marginBottom="4dip"
+			android:background="@drawable/divider" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dip"
+			android:layout_marginBottom="4dip"
+			android:text="From" />
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="4dip">
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="10dip"
+				android:layout_weight="2" />
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_alignParentRight="true" />
+		</LinearLayout>
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="1px"
+			android:layout_marginBottom="4dip"
+			android:background="@drawable/divider" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:text="Et Cetera" />
+		<Button
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:text="OK"
+			android:onClick="done" />
+	</LinearLayout>
+</ScrollView>

@@ -17,6 +17,21 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
+		<activity
+			android:name=".CreateEvent"
+			android:label="Create Event">
+			<intent-filter>
+				<action android:name="com.AppAssassins.calendar.CreateEvent"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".CalendarPreferences"
+			android:label="Preferences">
+			<intent-filter>
+				<action android:name="com.AppAssassins.calendar.CalendarPreferences" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 	</application>
 </manifest>
